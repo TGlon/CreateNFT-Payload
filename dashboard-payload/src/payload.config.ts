@@ -34,5 +34,8 @@ export default buildConfig({
   plugins: [payloadCloud()],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
+    connectOptions: {
+      dbName: "nft"
+    }
   }),
 })

@@ -19,7 +19,7 @@ import { Address } from '@ton/core';
 import { Mnemonic } from 'src/models/mnemonic';
 @Injectable()
 export class NftService {
-  constructor(@InjectModel(NFTItem.name) private nftModel: Model<NFTItem>,@InjectModel(Mnemonic.name) private mnemonicModel: Model<Mnemonic>) { }
+  constructor(@InjectModel(NFTItem.name) private nftModel: Model<NFTItem>, @InjectModel(Mnemonic.name) private mnemonicModel: Model<Mnemonic>) { }
   async getAllNftItems(): Promise<NFTItem[]> {
     const NFT = await this.nftModel.find().exec();
     const dirPath = path.join(__dirname, '../../src/data/metadata');
@@ -62,7 +62,7 @@ export class NftService {
               attributes: attribute
             };
             const filePath = path.join(dirPath, `${fileIndex}.json`);
-  
+
             // Save the data as index.json
             fs.writeFile(filePath, JSON.stringify(dataToSave, null, 2), (err) => {
               if (err) {
@@ -72,7 +72,7 @@ export class NftService {
               }
             });
             fileIndex++;
-          }  
+          }
         }
       });
     });
@@ -82,9 +82,9 @@ export class NftService {
   async init(): Promise<void> {
     const mnemonicData = await this.mnemonicModel.findOne().exec();
     console.log(mnemonicData.mnemonic);
-    
+
     if (!mnemonicData || !mnemonicData.mnemonic) {
-        throw new Error('Mnemonic not found in the database');
+      throw new Error('Mnemonic not found in the database');
     }
     const createNftItems = await this.getAllNftItems();
     const metadataFolderPath = './src/data/metadata/';
@@ -103,7 +103,7 @@ export class NftService {
     console.log(
       `Successfully uploaded the metadata to IPFS: https://gateway.pinata.cloud/ipfs/${metadataIpfsHash}`,
     );
-    
+
     console.log('Start deploy of NFT collection...');
     const collectionData = {
       ownerAddress: wallet.contract.address,
@@ -173,11 +173,11 @@ export class NftService {
 
     const files1 = await fs.promises.readdir(metadata1FolderPath);
     for (const file of files1) {
-        const filePath = path.join(metadata1FolderPath, file);
-        if (path.extname(filePath) === '.json') {
-            await fs.promises.unlink(filePath);
-            console.log(`Đã xóa file: ${filePath}`);
-        }
+      const filePath = path.join(metadata1FolderPath, file);
+      if (path.extname(filePath) === '.json') {
+        await fs.promises.unlink(filePath);
+        console.log(`Đã xóa file: ${filePath}`);
+      }
     }
     console.log('Đã xóa tất cả các file JSON trong thư mục metadata');
   }
