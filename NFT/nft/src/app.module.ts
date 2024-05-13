@@ -16,7 +16,7 @@ import { Mnemonic, MnemonicSchema } from './models/mnemonic';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DATABASE_URI'),
-        dbName: "payload1"
+        dbName: "nft"
       }),
       inject: [ConfigService],
     }),
