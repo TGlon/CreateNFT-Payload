@@ -87,6 +87,10 @@ export class NftService {
       throw new Error('Mnemonic not found in the database');
     }
     const createNftItems = await this.getAllNftItems();
+    if(createNftItems){
+      console.log("Create NFTItems ");
+      
+    }
     const metadataFolderPath = './src/data/metadata/';
     const imagesFolderPath = './src/data/images';
     // const targetWalletAddress = Address.parse('0QB56RbbrikjhcKVegAfhExt9_RjOeDiyzaN2_IwtLEALhgm');

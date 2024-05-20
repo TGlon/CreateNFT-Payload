@@ -88,4 +88,27 @@ export class NftItem {
 
     return msgBody.endCell();
   }
+  //////////////////////////////////////////////////////////////////
+  public async deployMultiple(
+    wallet: OpenedWallet,
+    mintParamsArray: mintParams[]
+  ): Promise<number> {
+    const seqno = await wallet.contract.getSeqno();
+    const messages = mintParamsArray.map(params => 
+      internal({
+        value: toNano("0.05"),  // assuming each NFT mint has the same cost
+        to: this.collection.address,
+        body: this.collection.createMintBody(params),
+      })
+    );
+  
+    await wallet.contract.sendTransfer({
+      seqno,
+      secretKey: wallet.keyPair.secretKey,
+      messages: messages,
+      sendMode: SendMode.IGNORE_ERRORS + SendMode.PAY_GAS_SEPARATELY,
+    });
+    return seqno;
+  }
+  
 }
